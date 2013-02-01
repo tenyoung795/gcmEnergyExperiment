@@ -1,0 +1,79 @@
+A basic outline of Java changes I made to Google's GCM Demo for an energy research experiment:
+
+* Java files added *
+
+gcm-demo-server:
+	Constants
+	MsgToRegIdSetMap
+	PolledMessage
+	PollServlet
+	PushPollSender
+	RegIdToColKeyToMsgMap
+	RegIdToMsgQueueMap
+
+* Java files changed *
+
+gcm-demo-server:
+	Datastore: completely rewritten
+	RegisterServlet:
+		Added String constants:
+		      PARARAMETER_CON_TYPE
+		      PARAMETER_OLD_ID
+		      PUSH
+		Modified doPost()
+	SendAllMessagesServlet:
+		Added fields:
+		      String[] stringPointer
+		      Message[] messagePointer
+		Modified:
+			Type of sender from Sender to subtype PushPollSender
+			newSender()
+			doPost()
+	UnregisterServlet:
+		Added String constants:
+		      PARAMETER_CON_TYPE
+		      POLL
+		Modified doPost()
+gcm-demo-client:
+	CommonUtilities:
+		Added all functions except displayMessage()
+		Added String constants:
+		      POLLED_MESSAGES
+		      PREFERENCES
+		      REGISTER_TYPE
+		      UNREGISTER_TYPE
+		      CONNECTION_TYPE
+		      OLD_ID
+		Added boolean constants:
+		      PUSH
+		      POLL
+		      NEW_REGISTER
+		      PUSH_REGISTER
+		Added long constants:
+		      TOTAL_UNREGISTER
+		      MANUAL_POLL
+	DemoActivity:
+		Added AsyncTask fields:
+		      toPollTask
+		      toPushTask
+		      pollTask
+		Modified:
+		      onOptionsItemSelected()
+		      onDestroy()
+	GCMIntentService:
+		Added:
+		      startPolling()
+		      generateNotifications()
+		      A Handler field
+		Mostly rewrote:
+		      onUnregistered()
+		Modified:
+		      onRegistered()
+		      onMessage()
+	ServerUtilities:
+		Added functions based on register():
+		      toPush()
+		      toPoll()
+		      poll()
+		Modified:
+		      post()
